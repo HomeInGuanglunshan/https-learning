@@ -1,0 +1,8 @@
+https://blog.csdn.net/aiwo1376301646/article/details/104864769《认证中心 CA 公钥认证中心 P113》
+
+K，key？
+A，Alice？
+T，Trudy？
+R，Bob 的公钥？
++，公钥？
+-，私钥？

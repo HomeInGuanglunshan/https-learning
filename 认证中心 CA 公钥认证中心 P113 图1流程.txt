@@ -1,0 +1,25 @@
+https://blog.csdn.net/aiwo1376301646/article/details/104864769《认证中心 CA 公钥认证中心 P113》
+、流程图，从上到下，从左到右？
+
+------------------------------
+Alice - Trudy: I am Alice
+  Trudy - Bob: I am Alice
+  Bob - Trudy: R
+  Trudy - Bob: K-T(R)
+Trudy - Alice: R
+  Bob - Trudy: 给我你的公钥
+Alice - Trudy: K-A(R)
+  Trudy - Bob: K+T
+Trudy - Alice: 给我你的公钥
+Alice - Trudy: K+A
+  Bob - Trudy: K+T(m)
+        Trudy: 截获明文：m = K-T(K+T(m))
+		Trudy: 利用 Alice 的公钥加密明文 m 并发送给 Alice
+Trudy - Alice: K+A(m)
+        Alice: m = K-A(K+A(m))
+
+------------------------------
+、是不是服务端和客户端，都有各自的一套公私钥
+、由图4“认证中心”得知，Bob 确实是服务器端
+、就是不太肯定 R 是什么东西
+	、应该不是证书，毕竟此处演示的是没有证书时的情况。

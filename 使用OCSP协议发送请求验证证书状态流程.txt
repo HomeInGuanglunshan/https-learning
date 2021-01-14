@@ -1,0 +1,19 @@
+《使用 OCSP协议 发送请求验证证书状态，OCSP验证苹果P12证书状态（有效 | 撤销）》https://blog.csdn.net/weixin_38297853/article/details/104027526
+
+、获取证书
+、获取 OCSP 地址
+	、从证书中获取
+、生成 OCSP 请求对象
+	、OCSPReq
+	、至少带上证书的序列号（Serial Number）
+	、貌似也要带上当前时间————System.currentTimeMillis()
+、携带上述请求对象，请求 OCSP 地址
+	、注意请求头的 Content-Type，为 application/ocsp-request
+	、有适当的重试，以应对可能的失败
+、得到 OCSP 响应对象
+	、OCSPResp
+、分析响应内容，判断当前证书是否有效
+	、三种响应
+		、有效（Good）
+		、过期（Revoked）
+		、未知（Unknown）

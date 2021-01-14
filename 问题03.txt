@@ -1,0 +1,149 @@
+
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 已解答 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+、尝试手动完成证书校验
+	、具体来说，是参考网友的经验，写一个 Java 证书校验脚本？
+	、关于证书公钥
+		、百度 - 证书 - 详细信息 - 公钥：RSA(2048 Bits)
+			30 82 01 0a 02 82 01 01 00 c1 a9 b0 ae 47 1a d2 57 eb 1d 15 1f 6e 5c b2 e4 f8 0b 20 db ea 00 df 29 ff a4 6b 89 26 4b 9f 23 2f ec 57 b0 8a b8 46 40 2a 7e bc dc 5a 45 97 4f ad 41 0e bc 20 86 4b 0c 5d 55 21 47 e2 31 3c 57 a7 ec 99 47 eb 47 0d 72 d7 c8 16 54 75 ef d3 45 11 0f 4b ce 60 7a 46 5c 28 74 ae 8e 1b be d8 70 66 7b a8 93 49 28 d2 a3 76 94 55 de 7c 27 f2 0f f7 98 0c ad 86 da c6 ae fd 9f f0 d9 81 32 9a 97 e3 21 ee 04 92 96 e4 78 11 e5 c4 10 0e 10 31 7a 4a 97 a0 eb c7 9b c4 da 89 37 a9 c3 37 d7 56 b1 7f 52 c7 d9 26 0a d6 af 38 16 b1 6d fb 73 79 b1 68 79 03 90 eb 88 7b 8c 48 91 98 51 a5 07 94 86 a5 78 46 79 8f 58 9b e9 35 59 a7 f1 7b 57 31 0a 90 cf 24 ce 0d 24 e7 92 b2 6a e9 e6 96 37 0a b8 7c 87 2f 74 d2 5c e8 4b 0a 5f 66 18 a7 41 86 cf 26 a6 08 8e a5 49 17 92 53 b3 91 a5 cf 53 b0 31 02 03 01 00 01
+		、CSDN - 证书 - 详细信息 - 公钥：RSA(2048 Bits)
+			30 82 01 0a 02 82 01 01 00 d2 20 d6 bc f9 5b b4 5c 6a ea 8a 71 71 0b 18 82 98 88 a3 83 c7 84 98 e2 3c 4f 2d da 31 98 d3 28 49 0f 8e 11 d7 6a 9e 87 39 78 bd 57 8f 6e b5 fb 01 5c 3d 50 cd cf 63 ce c8 4f 43 b5 ab e9 3d 94 e2 63 37 58 6f 51 67 1f 2c ad f3 60 85 ec 5d 3a b4 9e 1a ee ad dc d6 a7 f9 d9 f2 86 81 69 bd be ab fe 4f a5 ed 48 d2 04 92 52 d8 d2 93 af f4 a6 9c f5 73 72 40 fe 3d 98 3b f4 bc 12 8a 33 a2 a1 0e ac 1c bc 4a b8 48 65 4b 46 0a d4 13 c1 36 ce 74 b2 32 ae 21 5d da 5f ba 6a 86 bb 91 e1 c2 0f 34 34 09 b8 2b fa 43 30 c3 97 1d 21 40 89 43 30 9f bb 36 7f b5 b9 49 2a 13 7c 1c 0f 72 6b 6a c2 61 33 22 08 55 63 01 aa 5d d8 8f 75 81 ec aa 57 c2 4d b8 29 c4 c3 09 db 38 38 de aa b0 69 7d 8f 52 01 3a 28 45 cd e0 0f 48 ca 22 72 3d 09 8e 83 a3 f6 b2 06 5e 3f ce 2b 0a d7 bd 49 70 38 0e ed 02 03 01 00 01
+		、都是540个16进制字符
+		、头部 2 * 9 = 18 个通用字符，30 82 01 0a 02 82 01 01 00。尾部 2 * 5 = 10 个通用字符，02 03 01 00 01。共28个。
+		、非通用字符共 540 - 28 = 512 个
+		、一个16进制位，等于4个2进制位，4 * 512 = 2048
+		、但通过 java.security.cert.X509Certificate#getPublicKey 方法获取的 CSDN 证书公钥，则有些异样：
+			30 82 01 22 30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03 82 01 0f 00 30 82 01 0a 02 82 01 01 00 d2 20 d6 bc f9 5b b4 5c 6a ea 8a 71 71 0b 18 82 98 88 a3 83 c7 84 98 e2 3c 4f 2d da 31 98 d3 28 49 0f 8e 11 d7 6a 9e 87 39 78 bd 57 8f 6e b5 fb 01 5c 3d 50 cd cf 63 ce c8 4f 43 b5 ab e9 3d 94 e2 63 37 58 6f 51 67 1f 2c ad f3 60 85 ec 5d 3a b4 9e 1a ee ad dc d6 a7 f9 d9 f2 86 81 69 bd be ab fe 4f a5 ed 48 d2 04 92 52 d8 d2 93 af f4 a6 9c f5 73 72 40 fe 3d 98 3b f4 bc 12 8a 33 a2 a1 0e ac 1c bc 4a b8 48 65 4b 46 0a d4 13 c1 36 ce 74 b2 32 ae 21 5d da 5f ba 6a 86 bb 91 e1 c2 0f 34 34 09 b8 2b fa 43 30 c3 97 1d 21 40 89 43 30 9f bb 36 7f b5 b9 49 2a 13 7c 1c 0f 72 6b 6a c2 61 33 22 08 55 63 01 aa 5d d8 8f 75 81 ec aa 57 c2 4d b8 29 c4 c3 09 db 38 38 de aa b0 69 7d 8f 52 01 3a 28 45 cd e0 0f 48 ca 22 72 3d 09 8e 83 a3 f6 b2 06 5e 3f ce 2b 0a d7 bd 49 70 38 0e ed 02 03 01 00 01 
+			、可见，开头还多了一截 30 82 01 22 30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03 82 01 0f 00 
+			、30 82 01 22 30 0d 06 09 2a 86 48 86 f7 0d 01 01 01 05 00 03 82 01 0f 00 30 82 01 0a 02 82 01 01 00，共33对字符，共66个。 其后的256对字符，共512个，才是真正的公钥。
+	、双击打开 CSDN 证书，“详细信息”选项卡中的“指纹”为 eb52ba587f4b7abd28061c6843563325dec4f0e6。Win10 下，对该证书“右键 - CRC SHA - SHA-1”，得到的值也为 EB52BA587F4B7ABD28061C6843563325DEC4F0E6。
+		、“指纹及指纹算法是证书的“属性”，自身并不包含在证书里面，而是计算出来，指纹的核心目的是为了快速定位和找到期望的证书，和证书的签名没有任何关系。”
+			、《关于数字证数验证的两个问题？》https://www.zhihu.com/question/57347093
+		、虽然“详细信息”选项卡中有这么个“指纹”显示在那，但极有可能是本机在打开证书时，通过计算给出的额外展示，正如上所言，“自身并不包含在证书里面”。
+		、通过 keytool 命令，不但也可以看到 SHA1 的指纹，还可以看到 MD5 的指纹、SHA256 的指纹
+	、同样是输出证书内容，keytool -list -v -keystore .\my.keystore -alias csdn，不如 System.out.println("CSDN证书内容:" + "\n" + csdnCer); 结果丰富，起码在前者的输出内容中，连签名都找不到。PS：cdsnCer 是一个 java.security.cert.X509Certificate 对象。
+	、我猜测证书的签名（SHA256withRSA）流程如下：
+		、选取证书中的一部分内容，包括所有者（subject）、颁发者（issuer）、公钥（pubKey）等等内容，整合成一个 byte[] 数组
+			、“一部分内容”具体是什么，由于时间关系，不深入研究了。
+		、对该数组进行 SHA-256 加密，但会对加密结果加上特定前缀，比如：
+			、字符串"被加密的字符串"经过 SHA-256 后，得到 88a37ace8c0e297cfc244943c6b023e6fdaed7e0e89b4f3c6b2518207fc75e27
+			、再加上特定前缀后，为 3031300d06096086480165030402010500042088a37ace8c0e297cfc244943c6b023e6fdaed7e0e89b4f3c6b2518207fc75e27
+			、拆开来看，是 3031300d060960864801650304020105000420 88a37ace8c0e297cfc244943c6b023e6fdaed7e0e89b4f3c6b2518207fc75e27
+		、最后，用 RSA 的私钥，对上一步结果加密，获得签名
+	、java.security.cert.X509Certificate 的 verify() 方法，可以用于校验签名。例：csdnCer.verify(geoTrustCer.getPublicKey());
+		、csdnCer 是要校验签名的 CSDN 证书
+		、geoTrustCer 是 CSDN 证书的颁发者的证书，即 CSDN 证书的上一级证书
+		、两者都是 X509Certificate 对象
+	、《验证书链》https://www.jianshu.com/p/727be00f8423 的验证点：
+		、沿证书链自上而下，验证证书的所有者是下一个证书的颁布者
+		、验证证书的颁布者是上一个证书的所有者
+		、验证是否已使用与指定公钥相应的私钥签署了此证书
+			、即上一个证书携带的公钥
+		、获取 CRL 中所有的项
+			、查找证书链中是否有任一证书的序列号在这些项中
+		、证明证书链中的第一个证书由用户所信任的CA颁布
+			、我认为文章作者此步做得很烂，相当于在证明 1 = 1
+		、证明证书链中的最后一个证书的所有者正是现在通信对象
+		、验证证书链里每个证书是否在有效期里
+	、OCSP
+		、OCSP，Online Certificate Status Protocol，证书状态在线查询协议，是 IETF 颁布的用于实时查询数字证书在某一时间是否有效的标准
+			、《证书吊销列表(CRL)介绍》https://blog.csdn.net/u011640816/article/details/45270281
+		、《使用 OCSP协议 发送请求验证证书状态，OCSP验证苹果P12证书状态（有效 | 撤销）》https://blog.csdn.net/weixin_38297853/article/details/104027526
+			、获取证书
+			、获取 OCSP 地址
+				、从证书中获取
+			、生成 OCSP 请求对象
+				、OCSPReq
+				、至少带上证书的序列号（Serial Number）
+				、貌似也要带上当前时间————System.currentTimeMillis()
+			、携带上述请求对象，请求 OCSP 地址
+				、注意请求头的 Content-Type，为 application/ocsp-request
+				、有适当的重试，以应对可能的失败
+			、得到 OCSP 响应对象
+				、OCSPResp
+			、分析响应内容，判断当前证书是否有效
+				、三种响应
+					、有效（Good）
+					、过期（Revoked）
+					、未知（Unknown）
+		、《OCSP是什么》https://www.trustauth.cn/wiki/18065.html
+			、这篇文章提及到的某些内容，我不太理解，例如“OCSP向发起响应方公开了一个特定的网络主机在特定时刻所使用的特定证书。由于OCSP并不强制加密该证书，因此信息可能被第三方拦截”。但由于时间关系，包括其在内的很多内容，不深入探究了。
+	、由于时间关系，校验到此为止
+、为什么证书可以卖得这么贵？
+	、《为什么 SSL 证书那么贵?》https://www.zhihu.com/question/21838720
+、PKI 和 PKIX 有什么关系？
+	、“为了将X.509标准应用到Internet上，建设基于X.509标准的PKI系统，IETF（Internet Engineering Task Force）在1995年成立了PKIX工作组，开始制定各种与Internet相关的PKI标准。”
+		、来源：“PKIX - 百度百科”
+	、用 httpclient 请求某些 https 网址时，假如缺失根证书，会报错：Exception in thread "main" javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target
+		、PKIX path building failed，“PKIX path”是什么？算了，由于时间关系，不深入研究了。
+、PKI 是什么？
+	、Public Key Infrastructure
+	、“CA是证书的签发机构,它是PKI的核心”
+		、https://zhidao.baidu.com/question/753682127954233484.html?qbl=relate_question_2&word=%C8%E7%BA%CE%BD%E2%C3%DCCA%D6%A4%CA%E9
+	、https://zhuanlan.zhihu.com/p/30136885《5分钟让你知道什么是PKI》
+		“
+		就像之前提到的，一般来说，构成PKI的主要要素就是下面三个概念
+			1.证明书
+			2.认证机关
+			3.证书库
+		”
+		、关于“证书库”
+			、“实际上，证明书是被存放在硬盘或者IC卡里面的。......证书库因为某些原因，其实也就是文件系统而已，在网络上将证书存放在一起。这些东西，可以通过下载来获取。或者，因为某些原因，证书直接分发，从而省去了证书库这个环节。”
+				、所以“证书库”这个环节被省去之前的场景到底是怎样的？
+				、或许是这样的：不像现在只是存储根证书在系统或浏览器中，以前还存储 CA 颁发给网站的证书，如有需要，就从其中取出来使用。
+			、之前自建的 keystore 也是一个证书库？
+				、《创建数字证书库》https://www.ibm.com/support/knowledgecenter/zh/SSNKWF_9.0.0/com.ibm.rational.test.lt.doc/topics/tcreatecert.html
+			、《证书集合库》https://www.ibm.com/support/knowledgecenter/zh/SSAW57_8.5.5/com.ibm.websphere.nd.multiplatform.doc/ae/cwbs_collcertst.html
+				、“证书集合库是非根的认证中心 (CA) 证书和证书撤销列表 (CRL) 的集合。此 CA 证书和 CRL 的集合用于检查数字签名的 SOAP 消息的签名。”
+					、CRL，Certificate Revocation List，证书吊销列表，详情参考“CRL(证书吊销列表) - 百度百科”
+					、SOAP，Simple Object Access Protocol，简单对象访问协议，详情参考“SOAP(简单对象访问协议) - 百度百科”
+					、“数字签名的 SOAP 消息的签名”，这个词汇较难理解，或许《soap签名_签名SOAP消息–生成封装的XML签名》https://blog.csdn.net/dnc8371/article/details/107267818 有帮助
+				、“证书集合库是证书库的一种。”
+				、“证书集合库接受证书和 CRL 作为 Java 集合对象。”
+			、《证书库》http://dict.youdao.com/w/%E8%AF%81%E4%B9%A6%E5%BA%93/
+				、“证书库(Certificate Repository)，证书库存放经CA签发的证书和己撤销证书列表，最终实体可通过证书库提供的服务得到其他实体的证书，验证其真伪，查询证书的状态...”
+	、PKI - 百度百科
+		、“公钥基础设施是一个包括硬件、软件、人员、策略和规程的集合，用来实现基于公钥密码体制的密钥和证书的产生、管理、存储、分发和撤销等功能。”
+		、“PKI体系是计算机软硬件、权威机构及应用系统的结合。它为实施电子商务、电子政务、办公自动化等提供了基本的安全服务，从而使那些彼此不认识或距离很远的用户能通过信任链安全地交流。”
+、每个网站的证书都不一样吗？
+	、当然了。每份证书都有特定的“所有者”信息，每个网站的证书都不一样。如果证书的所有者并非当前浏览网站，浏览器会发出警告。还有，要是每个网站的证书都一样，那么中间人攻击无法防备。
+	、证书并不能使中间人消失，中间人还是可以劫持流量，还能获得同样的证书同样的公钥。
+		、但公钥无法解开公钥加密的信息，只有他无法获得的私钥才可以。
+		、所以，这里没有安全漏洞。
+、什么是“根证书”？
+	、https://zhidao.baidu.com/question/687441764965627924.html《根证书是什么？》
+	、https://www.jianshu.com/p/fcd0572c4765《关于证书链的一点认知》
+	、https://baike.baidu.com/item/%E8%AF%81%E4%B9%A6%E9%93%BE/1006625《证书链》
+	、我认为，根证书，就是位于证书链最高一级的证书，而且是自签证书，重要性不言而喻。日常用到的根证书，几乎都预装于操作系统或浏览器。用户切忌随便导入来路不明的根证书，以免对信息安全造成不可预料的危害。
+、阮一峰说：“如果数字证书记载的网址，与你正在浏览的网址不一致，就说明这张证书可能被冒用，浏览器会发出警告。”这里的“数字证书记载的网址”，指的是证书“所有者”吧？
+	、是的
+、Java 中的 cacerts 和 CA（certificate authority）的关系之处是？
+	、无关系
+	、前者只是一个 keystore，存储证书的。后者是一个公司或组织，颁发证书的。
+、阮一峰的讲义有没有纰漏？
+	、至少有不够严谨的地方，但无可厚非，毕竟只是为了领小白上道的。
+	、非常感谢阮一峰
+、网站在把证书发送给用户之前，是怎么得到证书的？
+	、“CA证书也就是由受信任的CA机构颁发的服务器证书，受信任的CA机构是经过版国际标准审计，并权加入各大根证书库的SSL证书才能成为被国际认可的、发挥加密和认证作用。”
+		、https://zhidao.baidu.com/question/753682127954233484.html?qbl=relate_question_2&word=%C8%E7%BA%CE%BD%E2%C3%DCCA%D6%A4%CA%E9
+	、简而言之，证书是 CA 颁发的？
+		、正是
+、认证中心，到底是怎样存在？
+	、在我看来，认证中心就是一个公司或组织，为网站颁发数字证书是他的赚钱手段（之一？）————不少数字证书挺贵的
+	、详情参考“百度百科 - 认证中心”，https://baike.baidu.com/item/%E8%AE%A4%E8%AF%81%E4%B8%AD%E5%BF%83/1716489?fr=aladdin
+、证书会不会被调包？如果会，怎么办？
+	、会，存在“伪造证书”这一说法
+	------------------------------
+	、上述的“伪造证书”一词，应是摘自《通过伪造CA证书，实现SSL中间人攻击》http://blog.sina.com.cn/s/blog_4a898cfb0100t8j7.html。
+		、伪造证书，只能骗那些无知用户，正如文章所言：
+		、“可以看出，SSL协议被设计的十分安全，要攻破它并不容易。但是我们可以利用浏览器对服务器证书检查的缺陷，通过伪造CA证书的方式，进行SSL中间人攻击。”
+		、“但实际上这个过程中浏览器会弹出警告，SSL攻击就相当于失败了，因此从这个意义上讲，SSL协议依然是无法攻破的。但以上的警告页面中都可以找到继续访问该页面的方式，对于不了解情况的用户，很可能会选择继续访问该页面而被SSL中间人攻击。我们的攻击就是在这种情况下进行的。”
+	、还有一种情况，就是垃圾 CA 乱颁发证书，很大程度上，是为中间人攻击提供帮助。
+		、《如果中间人使用真实 CA 签发的证书，他能成功吗？》https://www.v2ex.com/amp/t/656449
+	、访问网站时，浏览器告警了，要不要继续前往，自己看着办。
+、“解开数字证书的公钥”，哪里来？
+	、有人说，就在数字证书里(from: https://bbs.csdn.net/topics/110031388《请教CA公钥如何取得？》)
+		、我有可能理解错
+	、从网上的资料来看，解开证书不是问题
+	、我记得，只要把证书导入 D:\jdk1.8.0_74\jre\lib\security\cacerts 之后，就能通过 keytool -list -v -keystore "D:\jdk1.8.0_74\jre\lib\security\cacerts" -storepass changeit 命令，阅读该证书的内容
+	------------------------------
+	、从该证书的上一级证书中来。如果该证书是根证书，解开它的公钥就在其内，毕竟自签证书。

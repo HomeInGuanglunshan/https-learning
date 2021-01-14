@@ -1,0 +1,3 @@
+DigiCert
+	GeoTrust CN RSA CA G1
+		*.csdn.net

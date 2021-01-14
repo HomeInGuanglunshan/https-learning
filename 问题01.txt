@@ -1,0 +1,44 @@
+
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 已解答 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+、为什么澳门政务的证书导入 jre 的 cacerts 可以正常使用，但导入自建的 keystore 则无法使用？
+	、可以尝试把 cacerts 和自建 keystore 的所有证书都删除掉，接着分别仅导入澳门政务的证书。如果前者行得通，后者行不通，说明是自建的 keystore 有问题。如果都行不通，说明 cacerts 被删除的某些证书不可或缺。
+		、试过让 cacarts 中只存在澳门政务的证书（uataccount.gov.mo），随后确实请求不通下述的地址一了，但无法因此证明自建 keystore 有问题
+		、cacerts 的某些证书真的不可或缺
+	------------------------------
+	、此处问题，针对的是 httpClientTest456 的 iwhale.macao.IdentityOauthAuthorize3.java - httpClientTest456/src/main/java
+	、如果请求地址一：https://www.metaarchit.com/identity/oauth/authorize?identification=6db82dff-524d-4217-841d-02e5a194542a&account_type=PERSONAL&client_id=metaarchit&response_type=code&redirect_uri=http://localhost:8080/ 之前，没有任何相关登录，则会发生两次重定向：
+		、地址二：https://uataccount.gov.mo/o/authorize/?grant_type=code&client_id=mC6URDe02o115ab82XAaGxv9ed1iAhCfzBbjHD8u&redirect_uri=https://www.metaarchit.com/identity/personal-login&response_type=code
+		、地址三：https://uataccount.gov.mo/zh-hant/login/?next=/o/authorize/%3Fgrant_type%3Dcode%26client_id%3DmC6URDe02o115ab82XAaGxv9ed1iAhCfzBbjHD8u%26redirect_uri%3Dhttps%3A//www.metaarchit.com/identity/personal-login%26response_type%3Dcode
+	、向自建的 keystore 导入 uataccount.gov.mo 的证书后，请求地址一，会报：Exception in thread "main" javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to find valid certification path to requested target。
+	、这时候开始迷惑了：为什么 jdk 的 cacerts 导入 uataccount.gov.mo 的证书后，可以完美支持地址一的请求，而自建 keystore 却不行。原因并非出自 keystore 的质量，所以无论以什么样的方式重建了多少次 keystore，还是不行。
+	、www.metaarchit.com 的相关证书没有导入，才是问题所在。其证书路径如下：
+		Sectigo
+			Sectigo RSA Domain Validation Secure Server CA
+				www.metaarchit.com
+	、把 Sectigo 和 Sectigo RSA Domain Validation Secure Server CA 两级证书导入自建 keystore 后，问题迎刃而解，请求顺利进行，最后控制台呈现地址三的 response
+	、这两级证书不需要导入 jdk 的 cacerts，因为已存于其中，不过是以“comodorsaca”、“comodoaaaca”、“comodoeccca”这样的别名存在的
+		、据闻，Sectigo 和 Comodo 是同一回事，前者是新名，后者是旧名
+	、注意到，httpclient 请求的网址（如：www.metaarchit.com），如果有三级证书，只要最高的一级证书存在于 keystore 即可，否则请求失败，而较低的两级证书缺失与否没关系。但如果请求的网址只有一级证书（如：uataccount.gov.mo），也就是自签名证书，该证书必须存在于 keystore，不然请求失败。
+		、这就是“根证书”作用的体现？
+、我学过 RSA，但是彻底忘记了......所以 RSA 和 https 是有一定关系的吧？RSA 在 https 的作用是什么？
+	、RSA，非对称加密算法
+		、“非对称”，是相对于“对称”而言的
+		、公钥加密的，公钥无法解密，只有私钥才能解密；私钥加密的，私钥无法解密，只有公钥才能解密
+	、有关系，https 运用了 RSA 算法
+	、https 中的各种“公钥”、“私钥”，各种“签名”，就是 RSA 的产物
+	、RSA 虽然很安全，但太慢了，所以不可能应用于每条信息，它只是应用于客户端和服务器之间的会话密钥传输
+		、“会话密钥”是另一个话题了，在此不展开讨论
+		、“公私钥的加密解密确实很安全，但是他的速度很慢，如果每条信息都这么操作，会影响整个交流效率，所以当我们跟https建立连接后，通过公私钥交换的信息其实只有一个：会话秘钥。会话秘钥不是非对称加密，而是对称加密。”
+			、https://www.cnblogs.com/dennisj/p/12463168.html《RSA初探，聊聊怎么破解HTTPS》
+、既然可以跳过 X509，那么 https 存在的意义是什么？
+	、这是 httpclient 的操作套路给我留下的印象，实际上应该相当于“浏览器提示证书不安全但仍选择继续访问”。
+	、如果跳过了，那 https 和 http 没啥区别了
+	、用户要作死，网站可阻止不了。给你的保护，你不要，出了事，你能赖谁？
+、https 证书又叫 SSL 证书？
+	、百度百科介绍，HTTPS 全称 Hyper Text Transfer Protocol over SecureSocket Layer，由此看来，把 https 证书叫 SSL 证书没问题。
+	、文章，https://zhuanlan.zhihu.com/p/96157162《什么是HTTPS证书？什么是HTTPS证书》，第一部分直接说：“HTTPS证书（即SSL证书）。”
+	、https 证书的种类只能百度到 SSL 证书一种，倒是 SSL 证书能百度到多种。
+、为什么要用私钥，对“hash 函数生成的信件摘要”加密呢？不加密不行？
+	、难道，冒充的信件，其 hash 可以和原信件一样？
+	、难道可以从不加密的摘要，倒推并窥探到原信件的内容？
+	、这个问题已经有答案，详见“几种传输方式.txt”

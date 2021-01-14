@@ -1,0 +1,128 @@
+[
+[
+  Version: V3
+  Subject: CN=*.csdn.net, O=北京创新乐知信息技术有限公司, ST=北京市, C=CN
+  Signature Algorithm: SHA256withRSA, OID = 1.2.840.113549.1.1.11
+
+  Key:  Sun RSA public key, 2048 bits
+  modulus: 26526237469052190314394008769873975216372029863063755989393137251645107305359036748101065088258677390134367786930806883903789475530073024307596060452988073027089788844667721162364965852813870052071745504382845556321144253191850055896911680239757016722337327744752002770678631238430279856589955816075668304648036667779529946226719749077642866643336344593009268614477006518416570894589526123699730538943875354885851961779617054341086428521892798746641048949904056819510728019812473988971842516316952961359216827699830731639972475886622288323929817775698933545936941386490267612847658140959259933814164220826740332170989
+  public exponent: 65537
+  Validity: [From: Tue Oct 20 08:00:00 CST 2020,
+               To: Sun Nov 21 07:59:59 CST 2021]
+  Issuer: CN=GeoTrust CN RSA CA G1, OU=www.digicert.com, O=DigiCert Inc, C=US
+  SerialNumber: [    079c52fd 0c4b99c6 c95562c5 5f046b7d]
+
+Certificate Extensions: 10
+[1]: ObjectId: 1.3.6.1.4.1.11129.2.4.2 Criticality=false
+Extension unknown: DER encoded OCTET string =
+0000: 04 81 F5 04 81 F2 00 F0   00 76 00 F6 5C 94 2F D1  .........v..\./.
+0010: 77 30 22 14 54 18 08 30   94 56 8E E3 4D 13 19 33  w0".T..0.V..M..3
+0020: BF DF 0C 2F 20 0B CC 4E   F1 64 E3 00 00 01 75 45  .../ ..N.d....uE
+0030: 2E 16 DC 00 00 04 03 00   47 30 45 02 20 55 D5 76  ........G0E. U.v
+0040: 54 B2 D2 15 B3 93 94 F3   B1 65 B1 A2 E9 A0 1E 6D  T........e.....m
+0050: 5C 78 78 46 47 B0 73 A3   63 48 8C E7 D0 02 21 00  \xxFG.s.cH....!.
+0060: EB E2 FE 9C BE 7D E3 19   27 BB 03 93 5E AF FC 56  ........'...^..V
+0070: BE 29 F4 0B 56 80 64 CB   E2 10 1B 39 1F CA FA A9  .)..V.d....9....
+0080: 00 76 00 5C DC 43 92 FE   E6 AB 45 44 B1 5E 9A D4  .v.\.C....ED.^..
+0090: 56 E6 10 37 FB D5 FA 47   DC A1 73 94 B2 5E E6 F6  V..7...G..s..^..
+00A0: C7 0E CA 00 00 01 75 45   2E 17 31 00 00 04 03 00  ......uE..1.....
+00B0: 47 30 45 02 21 00 DC CD   0C 8A 87 75 37 7E E3 DB  G0E.!......u7...
+00C0: 19 DE B4 DD 9F 8C 79 B6   94 70 65 03 5C DA 94 08  ......y..pe.\...
+00D0: C6 E7 F9 E3 91 FD 02 20   0A 77 9A 3E 91 08 D2 B2  ....... .w.>....
+00E0: 86 F0 93 1F B7 32 48 99   FE AB 8E D7 20 11 48 6F  .....2H..... .Ho
+00F0: A6 E1 25 C5 B9 CC B7 B5                            ..%.....
+
+
+[2]: ObjectId: 1.3.6.1.5.5.7.1.1 Criticality=false
+AuthorityInfoAccess [
+  [
+   accessMethod: ocsp
+   accessLocation: URIName: http://ocsp.dcocsp.cn
+, 
+   accessMethod: caIssuers
+   accessLocation: URIName: http://crl.digicert-cn.com/GeoTrustCNRSACAG1.crt
+]
+]
+
+[3]: ObjectId: 2.5.29.35 Criticality=false
+AuthorityKeyIdentifier [
+KeyIdentifier [
+0000: 91 9F 5E 31 15 AE 10 9F   AD 60 C1 F7 C1 CC AA 48  ..^1.....`.....H
+0010: 34 2F 0C 26                                        4/.&
+]
+]
+
+[4]: ObjectId: 2.5.29.19 Criticality=true
+BasicConstraints:[
+  CA:false
+  PathLen: undefined
+]
+
+[5]: ObjectId: 2.5.29.31 Criticality=false
+CRLDistributionPoints [
+  [DistributionPoint:
+     [URIName: http://crl3.digicert.com/GeoTrustCNRSACAG1.crl]
+, DistributionPoint:
+     [URIName: http://crl4.digicert.com/GeoTrustCNRSACAG1.crl]
+]]
+
+[6]: ObjectId: 2.5.29.32 Criticality=false
+CertificatePolicies [
+  [CertificatePolicyId: [2.16.840.1.114412.1.1]
+[PolicyQualifierInfo: [
+  qualifierID: 1.3.6.1.5.5.7.2.1
+  qualifier: 0000: 16 1C 68 74 74 70 73 3A   2F 2F 77 77 77 2E 64 69  ..https://www.di
+0010: 67 69 63 65 72 74 2E 63   6F 6D 2F 43 50 53        gicert.com/CPS
+
+]]  ]
+  [CertificatePolicyId: [2.23.140.1.2.2]
+[]  ]
+]
+
+[7]: ObjectId: 2.5.29.37 Criticality=false
+ExtendedKeyUsages [
+  serverAuth
+  clientAuth
+]
+
+[8]: ObjectId: 2.5.29.15 Criticality=true
+KeyUsage [
+  DigitalSignature
+  Key_Encipherment
+]
+
+[9]: ObjectId: 2.5.29.17 Criticality=false
+SubjectAlternativeName [
+  DNSName: *.csdn.net
+  DNSName: csdn.net
+]
+
+[10]: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 52 55 4F BE 99 8B A8 1A   DA 41 0A 18 14 1A 26 E8  RUO......A....&.
+0010: 68 09 2C 93                                        h.,.
+]
+]
+
+]
+  Algorithm: [SHA256withRSA]
+  Signature:
+0000: 09 5B 34 B0 D8 ED 1B 72   4C C2 FB F6 80 88 BE F6  .[4....rL.......
+0010: AF 7D 24 2B 17 B5 68 94   52 C2 EC D0 4E 63 4A 26  ..$+..h.R...NcJ&
+0020: 34 2C E9 64 75 AD 21 E1   12 84 65 94 86 87 70 FC  4,.du.!...e...p.
+0030: F1 B0 E2 9C 16 16 F1 42   01 9E F2 12 9E 47 7D 4E  .......B.....G.N
+0040: 34 54 FF E8 A1 32 DA BA   CA 36 CD 4C BB 9E 4A 5B  4T...2...6.L..J[
+0050: AF C8 40 77 78 CF A7 B0   2D C8 FC 7E 56 D5 44 3F  ..@wx...-...V.D?
+0060: 62 11 A2 C4 0C 7A AD 53   55 2A 5D 82 CE 6F C0 7F  b....z.SU*]..o..
+0070: DE 9B 67 D4 E5 08 BD DD   07 3F 8D AF 81 70 46 DA  ..g......?...pF.
+0080: 81 66 77 DD E0 B9 57 D6   66 EF D6 E4 E9 2F 5F 52  .fw...W.f..../_R
+0090: 42 D3 8C D4 C8 BA A8 C4   8D D6 FC B6 CC 7F 5C FA  B.............\.
+00A0: 64 4A 0D C4 21 94 6A 78   4C 3D F0 46 D7 8C AA 3F  dJ..!.jxL=.F...?
+00B0: A0 A0 95 6E 1A 67 F8 CA   89 5B 82 D0 99 F4 CF E2  ...n.g...[......
+00C0: 89 22 38 F6 D7 42 01 D3   B5 BD 7A FE 22 FA C5 15  ."8..B....z."...
+00D0: E2 C3 6F 48 59 32 95 BC   FB B3 AA 3C 8F 0A B5 6C  ..oHY2.....<...l
+00E0: 51 0D 38 27 DF 0F D7 29   DE A1 D3 B9 7E 73 6F 0E  Q.8'...).....so.
+00F0: 3E E8 C9 E2 4F 6B 4D E5   60 6D FC 7E 4C B0 CD 6B  >...OkM.`m..L..k
+
+]

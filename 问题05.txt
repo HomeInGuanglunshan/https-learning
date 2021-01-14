@@ -1,0 +1,11 @@
+、OSCP 是什么？OSCP 故障是什么回事？比如 GlobalSign OSCP 故障
+	、OCSP，Online Certificate Status Protocol，证书状态在线查询协议，是 IETF 颁布的用于实时查询数字证书在某一时间是否有效的标准
+		、《证书吊销列表(CRL)介绍》https://blog.csdn.net/u011640816/article/details/45270281
+、“该站点安全证书的吊销信息不可用。是否继续？”
+	、证书链如下：
+		、DigiCert
+			、RapidSSL RSA CA 2018
+				、*.ztesoft.com（标红）
+、java.security.cert.X509Certificate#getTBSCertificate 是不是对校验证书签名有帮助？
+
+↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 已解答 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
